@@ -9,22 +9,18 @@ class App extends Component {
         super(props);
 
         this.playMusic = this.playMusic.bind(this);
+        this.pauseMusic = this.pauseMusic.bind(this);
     };
 
     state = {
         sound: ''
     };
 
-    playMusic() {
-        alert('playing...');
-        this.state.sound.play();
-    }
-
     componentDidMount() {
         var intialHowl = new Howl({
             src: ['http://localhost:53477/api/values/FileDownload'],
             format: ['mp3'],
-            autoplay: true,
+            autoplay: false,
             html5: true,
             loop: true,
             mobileAutoEnable: true,
@@ -38,10 +34,17 @@ class App extends Component {
 
         this.setState({ sound: intialHowl });
 
-        intialHowl.play();
-
         // Change global volume.
         Howler.volume(0.5);
+    }
+
+    playMusic() {
+        this.state.sound.play();
+    }
+
+    pauseMusic() {
+        console.log('paused');
+        this.state.sound.pause();
     }
 
     render() {
@@ -53,6 +56,7 @@ class App extends Component {
         </header>
             <p className="App-intro">
                 <button onClick={this.playMusic}>PLAY</button>
+                <button onClick={this.pauseMusic}>PAUSE</button>
 
           To get started, edit <code>src/App.js</code> and save to reload.
         </p>
