@@ -30,8 +30,10 @@ namespace ElasticTunes.DataResources
             return resources;
         }
 
-        public void WalkDirectory(DirectoryInfo root)
+        public List<string> WalkDirectory(DirectoryInfo root)
         {
+            var response = new List<string>();
+
             FileInfo[] files = null;
             DirectoryInfo[] subDirs = null;
 
@@ -53,6 +55,7 @@ namespace ElasticTunes.DataResources
                 foreach (FileInfo fi in files)
                 {
                     Console.WriteLine(fi.FullName);
+                    response.Add(fi.FullName);
                 }
 
                 subDirs = root.GetDirectories();
@@ -61,6 +64,8 @@ namespace ElasticTunes.DataResources
                     WalkDirectory(dirInfo);
                 }
             }
+
+            return response;
         }
     }
 }
