@@ -1,5 +1,4 @@
-﻿using System;
-using System.Linq;
+using System;
 using Xunit;
 
 namespace ElasticTunesTests
@@ -7,8 +6,9 @@ namespace ElasticTunesTests
     public class UnitTest1
     {
         [Fact]
-        public void TestMethod1()
+        public void Test1()
         {
+
         }
     }
 }

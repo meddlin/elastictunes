@@ -22,7 +22,9 @@ namespace ElasticTunes.Controllers
         [HttpGet]
         public FileStream FileDownload()
         {
-            var path = @"C:\Users\meddlin\Documents\Junkyard\git\ElasticTunes\ElasticTunes\Models\01 Kryptonite.mp3";
+            var path = @"C:\Users\meddlin\Documents\Junkyard\git\ElasticTunes\ElasticTunes\Models\263_full_resurgence_0160_preview.mp3";
+            //var path = @"C:\Users\meddlin\Documents\Junkyard\git\ElasticTunes\ElasticTunes\Models\bensound-happyrock.mp3";
+            //var path = @"C:\Users\meddlin\Documents\Junkyard\git\ElasticTunes\ElasticTunes\Models\01 Kryptonite.mp3";
             var result = new HttpResponseMessage(HttpStatusCode.OK);
             var stream = new FileStream(path, FileMode.Open, FileAccess.Read);
             result.Content = new StreamContent(stream);

@@ -28,43 +28,6 @@ namespace ElasticTunes.Models
             set { _isAsync = value; }
         }
 
-
-        //public override bool CanReadType(Type type)
-        //{
-        //    return type == _supportedType;
-        //}
-
-        //public override bool CanWriteType(Type type)
-        //{
-        //    return type == _supportedType;
-        //}
-
-        //public override Task<object> ReadFromStreamAsync(Type type, Stream stream,
-        //    HttpContentHeaders contentHeaders, IFormatterLogger formatterLogger)
-        //{
-        //    Task<object> readTask = GetReadTask(stream);
-        //    if (_isAsync)
-        //    {
-        //        readTask.Start();
-        //    }
-        //    else
-        //    {
-        //        readTask.RunSynchronously();
-        //    }
-        //    return readTask;
-
-        //}
-
-        //private Task<object> GetReadTask(Stream stream)
-        //{
-        //    return new Task<object>(() =>
-        //    {
-        //        var ms = new MemoryStream();
-        //        stream.CopyTo(ms);
-        //        return ms.ToArray();
-        //    });
-        //}
-
         private Task GetWriteTask(Stream stream, byte[] data)
         {
             return new Task(() =>

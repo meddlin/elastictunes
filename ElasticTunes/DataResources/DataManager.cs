@@ -3,12 +3,30 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
+using Nest;
+using Elasticsearch.Net;
+using ElasticTunes.Models;
 
 namespace ElasticTunes.DataResources
 {
     public class DataManager
     {
         static System.Collections.Specialized.StringCollection log = new System.Collections.Specialized.StringCollection();
+        private ElasticConnection _elasticConn;
+        public List<string> rawList = new List<string>();
+
+        public DataManager(string connection)
+        {
+            _elasticConn = _elasticConn ?? ElasticConnection.Instance(new Uri(connection), "music");
+
+            //_elasticConn = _elasticConn ?? ElasticConnection.Instance(
+            //    resource: settings.ElasticConnectionUri,
+            //    index: !string.IsNullOrWhiteSpace(NewIndexName) ? NewIndexName : settings.ElasticIndexAlias);
+
+            //NewIndexName = !string.IsNullOrWhiteSpace(settings.ElasticIndexAlias) ? settings.ElasticIndexAlias : "";
+        }
+
+        public List<string> GetListOfFiles() => rawList;
 
         public List<string> GetFiles()
         {
@@ -30,10 +48,8 @@ namespace ElasticTunes.DataResources
             return resources;
         }
 
-        public List<string> WalkDirectory(DirectoryInfo root)
+        public void WalkDirectory(DirectoryInfo root)
         {
-            var response = new List<string>();
-
             FileInfo[] files = null;
             DirectoryInfo[] subDirs = null;
 
@@ -55,7 +71,7 @@ namespace ElasticTunes.DataResources
                 foreach (FileInfo fi in files)
                 {
                     Console.WriteLine(fi.FullName);
-                    response.Add(fi.FullName);
+                    rawList.Add(fi.FullName);
                 }
 
                 subDirs = root.GetDirectories();
@@ -64,8 +80,38 @@ namespace ElasticTunes.DataResources
                     WalkDirectory(dirInfo);
                 }
             }
+        }
 
-            return response;
+        public List<MusicDocument> BuildDocuments(List<string> collection)
+        {
+            // TODO : DataManager.BuildDocuments -- Experiment with turning this into a generator
+            var result = new List<MusicDocument>();
+
+            if (collection.Count() > 0)
+            {
+                foreach(string c in collection)
+                {
+                    var tmp = new MusicDocument()
+                    {
+                        Id = Guid.NewGuid(),
+                        FileName = c,
+                        DateAdded = DateTime.Now
+                    };
+
+                    result.Add(tmp);
+                }
+            }
+
+            return result;
+        }
+
+        public void InsertToElastic(List<MusicDocument> collection)
+        {
+            IBulkResponse bulkIdx = _elasticConn.Client
+                .Bulk(b => b
+                    .Index("music")
+                    .IndexMany(collection)
+                );
         }
     }
 }
