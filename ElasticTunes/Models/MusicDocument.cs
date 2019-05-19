@@ -9,6 +9,7 @@ namespace ElasticTunes.Models
     {
         public Guid Id { get; set; }
 
+        public string SongNumber { get; set; }
         public string SongName { get; set; }
         public string Artist { get; set; }
         public string Album { get; set; }

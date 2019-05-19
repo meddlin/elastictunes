@@ -91,18 +91,38 @@ namespace ElasticTunes.DataResources
             {
                 foreach(string c in collection)
                 {
-                    var tmp = new MusicDocument()
-                    {
-                        Id = Guid.NewGuid(),
-                        FileName = c,
-                        DateAdded = DateTime.Now
-                    };
+                    var parsed = ParseFileName(c);
 
-                    result.Add(tmp);
+                    parsed.Id = Guid.NewGuid();
+                    parsed.FileName = c;
+                    parsed.DateAdded = DateTime.Now;
+
+                    //var tmp = new MusicDocument()
+                    //{
+                    //    Id = Guid.NewGuid(),
+                    //    FileName = c,
+                    //    DateAdded = DateTime.Now
+                    //};
+
+                    result.Add(parsed);
                 }
             }
 
             return result;
+        }
+
+        public MusicDocument ParseFileName(string fileName)
+        {
+            // "Z:\\0_MEDIA\\Music\\Led Zeppelin\\01 - Studio albums\\CD remastered\\1971 - Led Zeppelin IV [1994, Atlantic, 82638-2]\\06. Four Sticks.mp3"
+            var tmp = new MusicDocument();
+
+            string songName = fileName.Split("\\").Last();
+            string number = songName.Split(" ").FirstOrDefault();
+
+            tmp.SongName = songName;
+            tmp.SongNumber = number;
+
+            return tmp;
         }
 
         public void InsertToElastic(List<MusicDocument> collection)
