@@ -3,12 +3,13 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
+    "ajv": "^6.10.0",
     "formik": "^1.5.7",
-    "howler": "^2.0.15",
-    "office-ui-fabric-react": "^6.182.1",
-    "react": "^16.5.2",
-    "react-dom": "^16.5.2",
-    "react-scripts": "1.1.5",
+    "howler": "^2.1.2",
+    "office-ui-fabric-react": "^6.189.0",
+    "react": "^16.8.6",
+    "react-dom": "^16.8.6",
+    "react-scripts": "^3.0.1",
     "yup": "^0.27.0"
   },
   "scripts": {
